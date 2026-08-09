@@ -7,9 +7,6 @@ services:
       - bash
       - /usr/src/api/start.sh
 
-    ports:
-      - "3000:3000"
-
     expose:
       - "3000"
 
