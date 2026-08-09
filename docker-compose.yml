@@ -13,10 +13,13 @@ services:
     restart: always
 
     environment:
-      MONGODB_URI: mongodb://abibliadigital-mongo/abibliadigital
+      MONGODB_URI: mongodb://mongo:27017/abibliadigital
       NODE_ENV: development
       SECRET_KEY: 19B2AFFC3B287A4E41FA7C1158A8A
-      REDIS_URL: redis://abibliadigital-redis
+      REDIS_URL: redis://redis:6379
+
+    networks:
+      - app-network
 
     depends_on:
       - abibliadigital-redis
@@ -32,6 +35,12 @@ services:
 
     restart: always
 
+    networks:
+      app-network:
+        aliases:
+          - redis
+          - abibliadigital-redis
+
     volumes:
       - redis-data:/data
 
@@ -43,6 +52,12 @@ services:
 
     restart: always
 
+    networks:
+      app-network:
+        aliases:
+          - mongo
+          - abibliadigital-mongo
+
     volumes:
       - mongo-data:/data/db
       - mongo-log:/var/log/mongodb
@@ -51,3 +66,6 @@ volumes:
   redis-data:
   mongo-data:
   mongo-log:
+
+networks:
+  app-network:
