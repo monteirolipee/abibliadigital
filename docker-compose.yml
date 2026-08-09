@@ -1,6 +1,8 @@
 services:
   abibliadigital-app:
-    build: ./docker-api
+    build:
+      context: .
+      dockerfile: docker-api/Dockerfile
     command:
       - bash
       - /usr/src/api/start.sh
@@ -19,9 +21,6 @@ services:
       SECRET_KEY: 19B2AFFC3B287A4E41FA7C1158A8A
       REDIS_URL: redis://abibliadigital-redis
 
-    volumes:
-      - ../abibliadigital:/usr/src/api
-
     depends_on:
       - abibliadigital-redis
       - abibliadigital-mongo
@@ -37,7 +36,7 @@ services:
     restart: always
 
     volumes:
-      - ../redis-data:/data
+      - redis-data:/data
 
   abibliadigital-mongo:
     build: ./docker-mongo
@@ -48,5 +47,10 @@ services:
     restart: always
 
     volumes:
-      - ../mongo-abibliadigital/db/data:/data/db
-      - ../mongo-abibliadigital/db/log:/var/log/mongodb
+      - mongo-data:/data/db
+      - mongo-log:/var/log/mongodb
+
+volumes:
+  redis-data:
+  mongo-data:
+  mongo-log:
